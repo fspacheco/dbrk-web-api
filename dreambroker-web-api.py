@@ -36,9 +36,11 @@ class Analyze(Resource):
             if (char not in excludeList):
                 characterCount[char] += 1
         
-        print('#DBG:', [characterCount])
+        #print('#DBG:', [characterCount])
+        characterCount = dict(sorted(characterCount.items())) # ordered
+
         listCharCount=[]
-        for it in characterCount.items():
+        for it in characterCount.items(): # to list
             listCharCount.append(dict([it]))
         return {'textLength':{'withSpaces':withSpaces, 'withoutSpaces':withoutSpaces},'wordCount':wordCount, 'characterCount':listCharCount}, 200
 

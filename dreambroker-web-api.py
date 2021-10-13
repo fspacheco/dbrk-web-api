@@ -4,6 +4,7 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse
 from collections import defaultdict
+import string
 #import pandas as pd
 #import ast
 
@@ -19,16 +20,19 @@ class Analyze(Resource):
         args = parser.parse_args()
 
         input_text = args.get('text')
+        input_text = input_text.lower()
 
         withSpaces = len(input_text)
         withoutSpaces = withSpaces - input_text.count(" ")
 
-        wordList = input_text.split()
+        withoutPunct = input_text.translate(input_text.maketrans('', '', string.punctuation))
+
+        wordList = withoutPunct.split()
         wordCount = len(wordList)
 
         characterCount = defaultdict(int)
         excludeList = [' ', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
-        for char in input_text:
+        for char in withoutPunct:
             if (char not in excludeList):
                 characterCount[char] += 1
         

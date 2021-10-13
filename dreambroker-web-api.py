@@ -11,9 +11,6 @@ app = Flask(__name__)
 api = Api(app)
 
 class Analyze(Resource):
-    def get(self):
-        data = "este é um teste bem simples"
-        return {'data': data}, 200
     def post(self):
         parser = reqparse.RequestParser() #initialize
 
@@ -35,8 +32,11 @@ class Analyze(Resource):
             if (char not in excludeList):
                 characterCount[char] += 1
         
-        #print('#DBG:', characterCount)
-        return {'textLength':{'withSpaces':withSpaces, 'withoutSpaces':withoutSpaces},'wordCount':wordCount, 'characterCount':characterCount}, 200
+        print('#DBG:', [characterCount])
+        listCharCount=[]
+        for it in characterCount.items():
+            listCharCount.append(dict([it]))
+        return {'textLength':{'withSpaces':withSpaces, 'withoutSpaces':withoutSpaces},'wordCount':wordCount, 'characterCount':listCharCount}, 200
 
 api.add_resource(Analyze, '/analyze')  # '/users' is our entry point for Users
 
